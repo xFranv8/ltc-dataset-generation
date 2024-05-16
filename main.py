@@ -1,19 +1,50 @@
-from CarlaBridge import CarlaBridge
+import os
+import random
+import subprocess
+from subprocess import DEVNULL
+import time
 
 import carla
+import numpy as np
+
+from CarlaBridge import CarlaBridge
+from DatasetGenerator import DatasetGenerator
 
 
 def main():
     config: dict = {
-        "town": "Town04",
-        "weather": carla.WeatherParameters(cloudiness=70.0, precipitation=0.0, sun_altitude_angle=70.0),
-        "im_width": 640,
-        "im_height": 480
+        "im_width": 256,
+        "im_height": 144
     }
-    carla_bridge: CarlaBridge = CarlaBridge(config)
 
-    while True:
-        carla_bridge.run()
+    index: int = len(os.listdir("256x144-Dataset"))
+    print(index)
+    time.sleep(10)
+
+    output_dirs: list[str] = [f"256x144-Dataset/{i}" for i in range(index, 1001)]
+    maps: list[str] = ["Town01", "Town02", "Town03", "Town04", "Town05"]
+
+    config["weather"] = carla.WeatherParameters(cloudiness=np.random.normal(25, 50),
+                                                precipitation=np.random.normal(0, 20),
+                                                sun_altitude_angle=np.random.normal(60, 25))
+
+    config["town"] = random.choice(maps)
+
+    for dir in output_dirs:
+        print(f"Generating {dir} sequence")
+
+        config["weather"] = carla.WeatherParameters(cloudiness=np.random.normal(25, 50),
+                                                    precipitation=np.random.normal(0, 20),
+                                                    sun_altitude_angle=np.random.normal(60, 25))
+
+        config["town"] = random.choice(maps)
+
+        carla_bridge: CarlaBridge = CarlaBridge(config)
+        generator: DatasetGenerator = DatasetGenerator(dir, carla_bridge)
+
+        generator.generate_dataset()
+        generator.destroy_actors()
+        time.sleep(10)
 
 
 if __name__ == '__main__':
