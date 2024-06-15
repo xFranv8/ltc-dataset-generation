@@ -7,7 +7,7 @@ import seaborn
 
 
 def main() -> None:
-    sequences: list[str] = os.listdir("256x144-Dataset/")
+    sequences: list[str] = os.listdir("../Dataset/256x144-Dataset/")
     csvs: list[str] = [("256x144-Dataset/" + sequence + "/data_out.csv") for sequence in sequences]
 
     dataset: list[pandas.DataFrame] = [pandas.read_csv(csv) for csv in csvs]

@@ -1,7 +1,5 @@
 import os
 import random
-import subprocess
-from subprocess import DEVNULL
 import time
 
 import carla
@@ -17,7 +15,7 @@ def main():
         "im_height": 144
     }
 
-    index: int = len(os.listdir("256x144-Dataset"))
+    index: int = len(os.listdir("../Dataset/256x144-Dataset"))
     print(index)
     time.sleep(10)
 

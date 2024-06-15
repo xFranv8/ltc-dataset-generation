@@ -6,7 +6,7 @@ from CarlaBridge import CarlaBridge
 
 
 def main(args):
-    PATH: str = "ltcs/ltc-carla-2024-04-22 14:31:11.050334-finetunned.ckpt"
+    PATH: str = "../ltcs/ltc-carla-2024-04-22 14:31:11.050334-finetunned.ckpt"
 
     print(torch.cuda.is_available())
 
